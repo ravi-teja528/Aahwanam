@@ -25,7 +25,7 @@
     }
 
     /* ----------------------------------
-       FULLSCREEN 3D DOOR OVERLAY WITH ZOOM
+       FULLSCREEN 3D DOOR OVERLAY
     ---------------------------------- */
     #door-wrapper {
       position: fixed;
@@ -40,11 +40,9 @@
       overflow: hidden;
       transform-origin: center center;
       transition: transform 1.6s ease-in-out, opacity 0.8s ease;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
     }
 
-    /* Smooth 30% Zoom Animation */
+    /* Smooth 30% Zoom */
     #door-wrapper.zooming {
       transform: scale(1.3);
     }
@@ -52,7 +50,6 @@
     .door {
       width: 50vw;
       height: 100vh;
-      background-color: #2b0b05;
       background-image: url('1000197031.jpg');
       background-size: 100vw 100vh;
       background-repeat: no-repeat;
@@ -70,7 +67,7 @@
       transform-origin: right center;
     }
 
-    /* Slow Grand 3D Door Opening */
+    /* 3D Door Opening */
     #door-wrapper.open .door-left {
       transform: rotateY(-115deg);
     }
@@ -84,7 +81,7 @@
       opacity: 0;
     }
 
-    /* TOP DOOR TEXT */
+    /* HIGH-CONTRAST DOOR TEXT */
     .door-header-text {
       position: absolute;
       top: 6%;
@@ -117,24 +114,24 @@
       text-shadow: 0 0 10px rgba(255, 252, 240, 0.95), 0 0 15px rgba(255, 245, 210, 0.9);
     }
 
-    /* COMPACT DOOR CARD WITH "INVITED BY" */
+    /* DOOR HOST CARD (CLICK-THROUGH SAFE) */
     .door-host-card {
       position: absolute;
-      bottom: 21%;
+      bottom: 20%;
       left: 50%;
       transform: translateX(-50%);
       text-align: center;
       z-index: 10001;
       width: auto;
-      max-width: 320px;
-      pointer-events: none;
+      min-width: 260px;
+      max-width: 340px;
+      pointer-events: none !important;
       transition: opacity 0.4s ease;
-      background: rgba(255, 253, 247, 0.88);
+      background: rgba(255, 253, 247, 0.92);
       border: 1px solid #d4af37;
-      padding: 8px 20px;
+      padding: 8px 22px;
       border-radius: 16px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      backdrop-filter: blur(4px);
     }
 
     .door-host-label {
@@ -144,6 +141,7 @@
       letter-spacing: 1.5px;
       text-transform: uppercase;
       font-weight: 700;
+      margin-bottom: 2px;
     }
 
     .door-host-name {
@@ -151,12 +149,14 @@
       font-size: 1.05rem;
       font-weight: 800;
       color: #4a0505;
-      margin-top: 2px;
       letter-spacing: 0.5px;
-      line-height: 1.3;
+      line-height: 1.4;
     }
 
-    /* TAP TO OPEN */
+    .door-host-name div {
+      display: block;
+    }
+
     .tap-hint {
       position: absolute;
       bottom: 9%;
@@ -197,7 +197,7 @@
     }
 
     /* ----------------------------------
-       FLOATING ACTION BUTTON
+       FLOATING ACTION BUTTON (BOTTOM RIGHT)
     ---------------------------------- */
     .fab-celebrate {
       position: fixed;
@@ -372,9 +372,15 @@
     }
 
     @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(6px); }
-      60% { transform: translateY(3px); }
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(6px);
+      }
+      60% {
+        transform: translateY(3px);
+      }
     }
 
     /* PROGRAM SCHEDULE & PARTIAL DIVIDERS */
@@ -453,7 +459,7 @@
       box-shadow: 0 8px 22px rgba(139, 26, 26, 0.45);
     }
 
-    /* CLEAN HOST TYPOGRAPHY (WITHOUT BOX) AT BOTTOM */
+    /* HOST CONTACT */
     .contact-block {
       width: 100%;
     }
@@ -475,14 +481,18 @@
       color: #7a0c0c;
       margin-bottom: 12px;
       letter-spacing: 0.5px;
-      line-height: 1.35;
+      line-height: 1.4;
       text-shadow: 0 1px 2px rgba(255, 235, 200, 0.8);
+    }
+
+    .host-name-clean div {
+      display: block;
     }
 
     .contact-buttons {
       display: flex;
       justify-content: center;
-      gap: 12px;
+      gap: 15px;
       flex-wrap: wrap;
     }
 
@@ -491,8 +501,8 @@
       text-decoration: none;
       font-weight: 600;
       font-size: 0.9rem;
-      background: rgba(255, 253, 247, 0.92);
-      padding: 10px 20px;
+      background: rgba(255, 253, 247, 0.9);
+      padding: 10px 22px;
       border-radius: 25px;
       border: 1px solid #d4af37;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -522,7 +532,7 @@
       .door-header-text { font-size: 1.35rem; top: 6%; }
       .door-header-text span { font-size: 0.9rem; }
       .door-host-name { font-size: 0.95rem; }
-      .door-host-card { bottom: 21%; }
+      .door-host-card { bottom: 20%; }
       .family-title { font-size: 1.75rem; }
       .highlight-title { font-size: 1.8rem; }
       .content-area { gap: 30px; }
@@ -530,24 +540,25 @@
       .timer-unit { min-width: 50px; padding: 5px 8px; }
       .timer-value { font-size: 1rem; }
       .fab-celebrate { bottom: 18px; right: 18px; width: 48px; height: 48px; font-size: 1.3rem; }
-      .phone-btn { padding: 9px 16px; font-size: 0.85rem; }
     }
   </style>
 </head>
 <body>
 
   <!-- Fullscreen 3D Door Overlay -->
-  <div id="door-wrapper" onclick="openDoor()" ontouchstart="openDoor()">
-    <!-- Top Header on Door -->
+  <div id="door-wrapper" onclick="openDoor()">
     <div class="door-header-text" id="doorHeaderText">
       Penakacherla Family
       <span>Warmly Invites You</span>
     </div>
 
-    <!-- Door Card displaying "Invited by" with both Hosts -->
+    <!-- Door Card displaying "Invited by" with each host name on a new line -->
     <div class="door-host-card" id="doorHostCard">
       <div class="door-host-label">Invited by</div>
-      <div class="door-host-name">P Chinna Madanna<br>P Nagamani</div>
+      <div class="door-host-name">
+        <div>P Chinna Madanna</div>
+        <div>P Nagamani</div>
+      </div>
     </div>
 
     <div class="door door-left"></div>
@@ -559,7 +570,7 @@
   <!-- FIXED STAY-STILL BACKGROUND -->
   <div id="fixed-bg"></div>
 
-  <!-- FLOATING PARTY SHOWER BUTTON -->
+  <!-- FLOATING PARTY SHOWER BUTTON (BOTTOM RIGHT) -->
   <button class="fab-celebrate" onclick="showerBlessings()" title="Shower Blessings">🎉</button>
 
   <!-- SCROLLING ZONE CONSTRAINED TO MIDDLE 70% HEIGHT -->
@@ -652,10 +663,13 @@
         </a>
       </div>
 
-      <!-- CLEAN HOST TYPOGRAPHY (NO BOX) AT BOTTOM -->
+      <!-- Host Contact Info with Clean Host Names on separate lines -->
       <div class="contact-block">
         <div class="contact-label">Invited By</div>
-        <div class="host-name-clean">P Chinna Madanna P Nagamani</div>
+        <div class="host-name-clean">
+          <div>P Chinna Madanna</div>
+          <div>P Nagamani</div>
+        </div>
         <div class="contact-buttons">
           <a href="tel:8309973077" class="phone-btn">📞 8309973077</a>
           <a href="tel:7993583855" class="phone-btn">📞 7993583855</a>
@@ -666,35 +680,26 @@
   </div>
 
   <script>
-    var doorOpened = false;
-
     function openDoor() {
-      if (doorOpened) return;
-      doorOpened = true;
-
-      var doorWrapper = document.getElementById('door-wrapper');
-      var tapHint = document.getElementById('tapHint');
-      var doorHeaderText = document.getElementById('doorHeaderText');
-      var doorHostCard = document.getElementById('doorHostCard');
-      var scrollOverlay = document.getElementById('scrollOverlay');
-
-      // 1. Hide door text & tap prompt
+      const doorWrapper = document.getElementById('door-wrapper');
+      const tapHint = document.getElementById('tapHint');
+      const doorHeaderText = document.getElementById('doorHeaderText');
+      const doorHostCard = document.getElementById('doorHostCard');
+      const scrollOverlay = document.getElementById('scrollOverlay');
+      
       if (tapHint) tapHint.style.opacity = '0';
       if (doorHeaderText) doorHeaderText.style.opacity = '0';
       if (doorHostCard) doorHostCard.style.opacity = '0';
 
-      // 2. Smoothly zoom the wrapper image by 30% over 1.6s
       if (doorWrapper) doorWrapper.classList.add('zooming');
 
-      // 3. Open doors smoothly after zoom finishes
-      setTimeout(function() {
+      setTimeout(() => {
         if (doorWrapper) doorWrapper.classList.add('open');
         if (scrollOverlay) scrollOverlay.style.overflowY = 'auto';
         showerBlessings();
       }, 1500);
 
-      // 4. Completely unmount door overlay
-      setTimeout(function() {
+      setTimeout(() => {
         if (doorWrapper) {
           doorWrapper.classList.add('fade-out');
           doorWrapper.style.display = 'none';
@@ -702,33 +707,32 @@
       }, 3600);
     }
 
-    // Window load handler for click & touch triggers
-    window.onload = function() {
-      var wrapper = document.getElementById('door-wrapper');
-      if (wrapper) {
-        wrapper.onclick = openDoor;
-        wrapper.ontouchstart = function(e) {
-          openDoor();
-        };
-      }
-      initCountdown();
-    };
-
     /* COUNTDOWN TIMER FUNCTION */
     function initCountdown() {
-      var targetDate = new Date('August 19, 2026 04:30:00').getTime();
+      const targetDate = new Date('August 19, 2026 04:30:00').getTime();
 
       function updateTimer() {
-        var now = new Date().getTime();
-        var difference = targetDate - now;
+        const now = new Date().getTime();
+        const difference = targetDate - now;
 
         if (difference <= 0) {
-          var timerElem = document.getElementById('countdownTimer');
+          const timerElem = document.getElementById('countdownTimer');
           if (timerElem) {
             timerElem.innerHTML = "<div style='font-family: Marcellus, serif; color: #7a0c0c; font-weight: 600; font-size: 0.95rem;'>✦ The Auspicious Event Has Begun ✦</div>";
           }
           return;
         }
 
-        var days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        const daysElem = document.getElementById('timerDays');
+        const hoursElem = document.getElementById('timerHours');
+        const minsElem = document.getElementById('timerMins');
+        const secsElem = document.getElementById('timerSecs');
+
+        if (daysElem) daysElem.innerText = String(days).padStart(2, '0');
+        if (hoursElem) hoursElem.innerText = String(hours).padStart(2, '0');
+        if 

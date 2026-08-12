@@ -35,16 +35,22 @@
       height: 100vh;
       z-index: 9999;
       perspective: 1500px;
+      -webkit-perspective: 1500px;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
       display: flex;
       cursor: pointer;
       overflow: hidden;
       transform-origin: center center;
       transition: transform 1.6s ease-in-out, opacity 0.8s ease;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
 
     /* Smooth 30% Zoom */
     #door-wrapper.zooming {
       transform: scale(1.3);
+      -webkit-transform: scale(1.3);
     }
 
     .door {
@@ -54,26 +60,33 @@
       background-size: 100vw 100vh;
       background-repeat: no-repeat;
       transition: transform 2.2s cubic-bezier(0.35, 0, 0.25, 1);
+      -webkit-transition: -webkit-transform 2.2s cubic-bezier(0.35, 0, 0.25, 1);
       position: relative;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
 
     .door-left {
       background-position: left center;
       transform-origin: left center;
+      -webkit-transform-origin: left center;
     }
 
     .door-right {
       background-position: right center;
       transform-origin: right center;
+      -webkit-transform-origin: right center;
     }
 
     /* 3D Door Opening */
     #door-wrapper.open .door-left {
       transform: rotateY(-115deg);
+      -webkit-transform: rotateY(-115deg);
     }
 
     #door-wrapper.open .door-right {
       transform: rotateY(115deg);
+      -webkit-transform: rotateY(115deg);
     }
 
     #door-wrapper.fade-out {
@@ -87,6 +100,7 @@
       top: 6%;
       left: 50%;
       transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
       font-family: 'Cinzel Decorative', serif;
       font-size: 1.65rem;
       font-weight: 700;
@@ -97,7 +111,7 @@
       z-index: 10001;
       letter-spacing: 1px;
       line-height: 1.35;
-      pointer-events: none;
+      pointer-events: none !important;
       transition: opacity 0.4s ease;
       text-shadow: 0 0 12px rgba(255, 252, 240, 0.95), 0 0 20px rgba(255, 245, 210, 0.9), 1px 2px 4px rgba(0,0,0,0.3);
     }
@@ -114,12 +128,13 @@
       text-shadow: 0 0 10px rgba(255, 252, 240, 0.95), 0 0 15px rgba(255, 245, 210, 0.9);
     }
 
-    /* DOOR HOST CARD (CLICK-THROUGH SAFE) */
+    /* DOOR HOST CARD */
     .door-host-card {
       position: absolute;
       bottom: 20%;
       left: 50%;
       transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
       text-align: center;
       z-index: 10001;
       width: auto;
@@ -162,6 +177,7 @@
       bottom: 9%;
       left: 50%;
       transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
       background: linear-gradient(135deg, #7a0c0c, #4a0505);
       color: #fff3d1;
       padding: 12px 30px;
@@ -174,7 +190,7 @@
       animation: pulse 2s infinite;
       z-index: 10000;
       text-transform: uppercase;
-      pointer-events: none;
+      pointer-events: none !important;
       transition: opacity 0.4s ease;
     }
 
@@ -197,7 +213,7 @@
     }
 
     /* ----------------------------------
-       FLOATING ACTION BUTTON (BOTTOM RIGHT)
+       FLOATING ACTION BUTTON
     ---------------------------------- */
     .fab-celebrate {
       position: fixed;
@@ -372,15 +388,9 @@
     }
 
     @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-      }
-      40% {
-        transform: translateY(6px);
-      }
-      60% {
-        transform: translateY(3px);
-      }
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(6px); }
+      60% { transform: translateY(3px); }
     }
 
     /* PROGRAM SCHEDULE & PARTIAL DIVIDERS */
@@ -518,14 +528,8 @@
     }
 
     @keyframes fallLinear {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(105vh) rotate(360deg);
-        opacity: 0;
-      }
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
     }
 
     @media (max-width: 480px) {
@@ -546,7 +550,7 @@
 <body>
 
   <!-- Fullscreen 3D Door Overlay -->
-  <div id="door-wrapper" onclick="openDoor()">
+  <div id="door-wrapper">
     <div class="door-header-text" id="doorHeaderText">
       Penakacherla Family
       <span>Warmly Invites You</span>
@@ -680,59 +684,55 @@
   </div>
 
   <script>
+    var doorOpened = false;
+
     function openDoor() {
-      const doorWrapper = document.getElementById('door-wrapper');
-      const tapHint = document.getElementById('tapHint');
-      const doorHeaderText = document.getElementById('doorHeaderText');
-      const doorHostCard = document.getElementById('doorHostCard');
-      const scrollOverlay = document.getElementById('scrollOverlay');
-      
+      if (doorOpened) return;
+      doorOpened = true;
+
+      var doorWrapper = document.getElementById('door-wrapper');
+      var tapHint = document.getElementById('tapHint');
+      var doorHeaderText = document.getElementById('doorHeaderText');
+      var doorHostCard = document.getElementById('doorHostCard');
+      var scrollOverlay = document.getElementById('scrollOverlay');
+
       if (tapHint) tapHint.style.opacity = '0';
       if (doorHeaderText) doorHeaderText.style.opacity = '0';
       if (doorHostCard) doorHostCard.style.opacity = '0';
 
       if (doorWrapper) doorWrapper.classList.add('zooming');
 
-      setTimeout(() => {
+      setTimeout(function() {
         if (doorWrapper) doorWrapper.classList.add('open');
         if (scrollOverlay) scrollOverlay.style.overflowY = 'auto';
         showerBlessings();
       }, 1500);
 
-      setTimeout(() => {
+      setTimeout(function() {
         if (doorWrapper) {
           doorWrapper.classList.add('fade-out');
-          doorWrapper.style.display = 'none';
+          setTimeout(function() {
+            doorWrapper.style.display = 'none';
+          }, 800);
         }
       }, 3600);
     }
 
+    // Explicitly attach touchstart and click to overcome iOS Safari div bugs
+    function setupTouchTrigger() {
+      var wrapper = document.getElementById('door-wrapper');
+      if (wrapper) {
+        wrapper.addEventListener('click', openDoor, false);
+        wrapper.addEventListener('touchstart', openDoor, { passive: true });
+      }
+    }
+
     /* COUNTDOWN TIMER FUNCTION */
     function initCountdown() {
-      const targetDate = new Date('August 19, 2026 04:30:00').getTime();
+      var targetDate = new Date('August 19, 2026 04:30:00').getTime();
 
       function updateTimer() {
-        const now = new Date().getTime();
-        const difference = targetDate - now;
+        var now = new Date().getTime();
+        var difference = targetDate - now;
 
-        if (difference <= 0) {
-          const timerElem = document.getElementById('countdownTimer');
-          if (timerElem) {
-            timerElem.innerHTML = "<div style='font-family: Marcellus, serif; color: #7a0c0c; font-weight: 600; font-size: 0.95rem;'>✦ The Auspicious Event Has Begun ✦</div>";
-          }
-          return;
-        }
-
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-        const daysElem = document.getElementById('timerDays');
-        const hoursElem = document.getElementById('timerHours');
-        const minsElem = document.getElementById('timerMins');
-        const secsElem = document.getElementById('timerSecs');
-
-        if (daysElem) daysElem.innerText = String(days).padStart(2, '0');
-        if (hoursElem) hoursElem.innerText = String(hours).padStart(2, '0');
-        if 
+        if (difference <= 

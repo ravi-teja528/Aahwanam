@@ -150,7 +150,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* TAP TO OPEN (ORIGINAL POSITION) */
+    /* TAP TO OPEN */
     .tap-hint {
       position: absolute;
       bottom: 9%;
@@ -246,7 +246,7 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 34px;
+      gap: 32px;
     }
 
     /* TYPOGRAPHY STYLES */
@@ -261,12 +261,39 @@
 
     .family-title {
       font-family: 'Playfair Display', serif;
-      font-size: 2.1rem;
+      font-size: 2rem;
       font-weight: 800;
       color: #5c0d0d;
-      margin-top: 6px;
+      margin-top: 4px;
       line-height: 1.25;
       text-shadow: 1px 1px 2px rgba(255, 235, 200, 0.9);
+    }
+
+    /* NEW TOP HOST HIGHLIGHT BADGE ON 2ND PAGE */
+    .top-host-badge {
+      display: inline-block;
+      margin-top: 8px;
+      background: rgba(255, 253, 247, 0.9);
+      border: 1px solid #d4af37;
+      padding: 5px 18px;
+      border-radius: 20px;
+      box-shadow: 0 3px 10px rgba(139, 26, 26, 0.12);
+    }
+
+    .top-host-text {
+      font-family: 'Marcellus', serif;
+      font-size: 0.82rem;
+      color: #8b1a1a;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .top-host-text strong {
+      color: #4a0505;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
     }
 
     .highlight-container {
@@ -447,7 +474,7 @@
       box-shadow: 0 8px 22px rgba(139, 26, 26, 0.45);
     }
 
-    /* HIGHLIGHTED HOST CONTACT BLOCK */
+    /* HOST CONTACT BUTTONS SECTION */
     .contact-block {
       width: 100%;
     }
@@ -459,25 +486,7 @@
       letter-spacing: 1.5px;
       text-transform: uppercase;
       font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .host-highlight-card {
-      display: inline-block;
-      background: rgba(255, 253, 247, 0.95);
-      border: 2px solid #d4af37;
-      padding: 8px 20px;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(139, 26, 26, 0.12);
-      margin-bottom: 14px;
-    }
-
-    .host-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: #5c0d0d;
-      letter-spacing: 0.5px;
+      margin-bottom: 12px;
     }
 
     .contact-buttons {
@@ -524,9 +533,9 @@
       .door-header-text span { font-size: 0.9rem; }
       .door-host-name { font-size: 1.05rem; }
       .door-host-card { bottom: 22%; }
-      .family-title { font-size: 1.75rem; }
+      .family-title { font-size: 1.7rem; }
       .highlight-title { font-size: 1.8rem; }
-      .content-area { gap: 30px; }
+      .content-area { gap: 28px; }
       .timer-unit { min-width: 50px; padding: 5px 8px; }
       .timer-value { font-size: 1rem; }
       .fab-celebrate { bottom: 18px; right: 18px; width: 48px; height: 48px; font-size: 1.3rem; }
@@ -566,10 +575,15 @@
   <div class="scroll-overlay" id="scrollOverlay">
     <div class="content-area">
       
-      <!-- Top Shlok & Family Name -->
+      <!-- Top Shlok, Family Name & Relocated Host Name -->
       <div>
         <div class="shlok-text">|| Shree Madavraja Swamy Namaha ||</div>
         <div class="family-title">Penakacherla Family's</div>
+        
+        <!-- RELOCATED HOST NAME BADGE ON 2ND PAGE TOP -->
+        <div class="top-host-badge">
+          <span class="top-host-text">Host: <strong>P Chinna Madanna</strong></span>
+        </div>
       </div>
 
       <!-- INVITATION HEADER -->
@@ -652,12 +666,9 @@
         </a>
       </div>
 
-      <!-- HIGHLIGHTED HOST CONTACT BLOCK -->
+      <!-- HOST CONTACT BUTTONS BLOCK -->
       <div class="contact-block">
-        <div class="contact-label">Host</div>
-        <div class="host-highlight-card">
-          <div class="host-name">P Chinna Madanna</div>
-        </div>
+        <div class="contact-label">Host Contact Information</div>
         <div class="contact-buttons">
           <a href="tel:8309973077" class="phone-btn">📞 8309973077</a>
           <a href="tel:7993583855" class="phone-btn">📞 7993583855</a>
@@ -720,40 +731,4 @@
         const secsElem = document.getElementById('timerSecs');
 
         if (daysElem) daysElem.innerText = String(days).padStart(2, '0');
-        if (hoursElem) hoursElem.innerText = String(hours).padStart(2, '0');
-        if (minsElem) minsElem.innerText = String(minutes).padStart(2, '0');
-        if (secsElem) secsElem.innerText = String(seconds).padStart(2, '0');
-      }
-
-      updateTimer();
-      setInterval(updateTimer, 1000);
-    }
-
-    initCountdown();
-
-    /* PETAL & BLESSING SHOWER FUNCTION */
-    function showerBlessings() {
-      const items = ['🌸', '🌹', '🌼', '✨', '🎉'];
-      const totalPetals = 35;
-
-      for (let i = 0; i < totalPetals; i++) {
-        setTimeout(() => {
-          const petal = document.createElement('div');
-          petal.className = 'falling-petal';
-          petal.innerText = items[Math.floor(Math.random() * items.length)];
-          
-          petal.style.left = Math.random() * 95 + 'vw';
-          petal.style.fontSize = (Math.random() * 14 + 16) + 'px';
-          petal.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
-
-          document.body.appendChild(petal);
-
-          setTimeout(() => {
-            petal.remove();
-          }, 4500);
-        }, i * 80);
-      }
-    }
-  </script>
-</body>
-</html>
+        if (hoursElem) hoursElem

@@ -67,13 +67,12 @@
       transform-origin: right center;
     }
 
-    /* INSTANT 3D DOOR SWING OPEN */
     #door-wrapper.open .door-left {
-      transform: rotateY(-120deg);
+      transform: rotateY(-115deg);
     }
 
     #door-wrapper.open .door-right {
-      transform: rotateY(120deg);
+      transform: rotateY(115deg);
     }
 
     #door-wrapper.fade-out {
@@ -114,21 +113,21 @@
       text-shadow: 0 0 10px rgba(255, 252, 240, 0.95), 0 0 15px rgba(255, 245, 210, 0.9);
     }
 
-    /* COMPACT HIGHER HOST CARD ON DOOR */
+    /* COMPACT DOOR CARD WITH "INVITED BY" */
     .door-host-card {
       position: absolute;
-      bottom: 22%;
+      bottom: 21%;
       left: 50%;
       transform: translateX(-50%);
       text-align: center;
       z-index: 10001;
       width: auto;
-      max-width: 280px;
+      max-width: 320px;
       pointer-events: none;
       transition: opacity 0.4s ease;
       background: rgba(255, 253, 247, 0.88);
       border: 1px solid #d4af37;
-      padding: 6px 18px;
+      padding: 8px 20px;
       border-radius: 16px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
       backdrop-filter: blur(4px);
@@ -145,11 +144,12 @@
 
     .door-host-name {
       font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 800;
       color: #4a0505;
-      margin-top: 1px;
+      margin-top: 2px;
       letter-spacing: 0.5px;
+      line-height: 1.3;
     }
 
     /* TAP TO OPEN */
@@ -298,37 +298,6 @@
       max-width: 440px;
       font-weight: 500;
       text-shadow: 0 1px 2px rgba(255, 255, 255, 0.85);
-    }
-
-    /* ELEGANT INVITATION BY HOST ATTRIBUTION BADGE */
-    .host-attribution-box {
-      margin-top: -12px;
-      padding: 8px 22px;
-      background: rgba(255, 253, 247, 0.92);
-      border: 1.5px solid #d4af37;
-      border-radius: 20px;
-      box-shadow: 0 4px 14px rgba(139, 26, 26, 0.12);
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .host-attribution-label {
-      font-family: 'Marcellus', serif;
-      font-size: 0.78rem;
-      color: #8b1a1a;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .host-attribution-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: #4a0505;
-      letter-spacing: 0.5px;
     }
 
     .date-text {
@@ -480,7 +449,7 @@
       box-shadow: 0 8px 22px rgba(139, 26, 26, 0.45);
     }
 
-    /* HOST CONTACT BUTTONS SECTION */
+    /* HIGHLIGHTED HOST CONTACT BLOCK AT BOTTOM */
     .contact-block {
       width: 100%;
     }
@@ -492,7 +461,26 @@
       letter-spacing: 1.5px;
       text-transform: uppercase;
       font-weight: 600;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
+    }
+
+    .host-highlight-card {
+      display: inline-block;
+      background: rgba(255, 253, 247, 0.95);
+      border: 1.5px solid #d4af37;
+      padding: 10px 22px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(139, 26, 26, 0.12);
+      margin-bottom: 14px;
+    }
+
+    .host-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #5c0d0d;
+      letter-spacing: 0.5px;
+      line-height: 1.35;
     }
 
     .contact-buttons {
@@ -537,12 +525,12 @@
     @media (max-width: 480px) {
       .door-header-text { font-size: 1.35rem; top: 6%; }
       .door-header-text span { font-size: 0.9rem; }
-      .door-host-name { font-size: 1.05rem; }
-      .door-host-card { bottom: 22%; }
+      .door-host-name { font-size: 0.95rem; }
+      .door-host-card { bottom: 21%; }
       .family-title { font-size: 1.7rem; }
       .highlight-title { font-size: 1.8rem; }
       .content-area { gap: 28px; }
-      .host-attribution-name { font-size: 1.1rem; }
+      .host-name { font-size: 1.05rem; }
       .timer-unit { min-width: 50px; padding: 5px 8px; }
       .timer-value { font-size: 1rem; }
       .fab-celebrate { bottom: 18px; right: 18px; width: 48px; height: 48px; font-size: 1.3rem; }
@@ -553,17 +541,17 @@
 <body>
 
   <!-- Fullscreen 3D Door Overlay -->
-  <div id="door-wrapper">
+  <div id="door-wrapper" onclick="openDoor()" ontouchstart="openDoor()">
     <!-- Top Header on Door -->
     <div class="door-header-text" id="doorHeaderText">
       Penakacherla Family
       <span>Warmly Invites You</span>
     </div>
 
-    <!-- Compact Higher Host Card on Door -->
+    <!-- Door Card displaying "Invited by" with both Hosts -->
     <div class="door-host-card" id="doorHostCard">
-      <div class="door-host-label">Host</div>
-      <div class="door-host-name">P Chinna Madanna</div>
+      <div class="door-host-label">Invited by</div>
+      <div class="door-host-name">P Chinna Madanna & P Nagamani</div>
     </div>
 
     <div class="door door-left"></div>
@@ -598,12 +586,6 @@
       <!-- INVITATION TEXT -->
       <div class="invitation-desc">
         With the divine grace and blessings of Shree Madavraja Swamy, we cordially invite you to join us in celebrating our Housewarming Ceremony. Your presence and blessings will make our new beginning truly auspicious.
-      </div>
-
-      <!-- ELEGANT HOST ATTRIBUTION RIGHT AFTER INVITATION MESSAGE -->
-      <div class="host-attribution-box">
-        <span class="host-attribution-label">✦ Cordially Invited By ✦</span>
-        <span class="host-attribution-name">P Chinna Madanna</span>
       </div>
 
       <!-- Event Date -->
@@ -674,9 +656,12 @@
         </a>
       </div>
 
-      <!-- HOST CONTACT BUTTONS BLOCK -->
+      <!-- HOST & CONTACT INFO AT BOTTOM ONLY -->
       <div class="contact-block">
-        <div class="contact-label">Host Contact Information</div>
+        <div class="contact-label">Invited By</div>
+        <div class="host-highlight-card">
+          <div class="host-name">P Chinna Madanna & P Nagamani</div>
+        </div>
         <div class="contact-buttons">
           <a href="tel:8309973077" class="phone-btn">📞 8309973077</a>
           <a href="tel:7993583855" class="phone-btn">📞 7993583855</a>
@@ -704,13 +689,13 @@
       if (doorHeaderText) doorHeaderText.style.opacity = '0';
       if (doorHostCard) doorHostCard.style.opacity = '0';
 
-      // 2. Open 3D doors immediately
+      // 2. Swing open doors immediately
       if (doorWrapper) doorWrapper.classList.add('open');
       if (scrollOverlay) scrollOverlay.style.overflowY = 'auto';
 
       showerBlessings();
 
-      // 3. Fade out overlay and remove
+      // 3. Fade out overlay
       setTimeout(function() {
         if (doorWrapper) {
           doorWrapper.classList.add('fade-out');
@@ -719,7 +704,7 @@
       }, 1600);
     }
 
-    // Direct event assignment for maximum mobile browser compatibility
+    // Direct window load handling
     window.onload = function() {
       var wrapper = document.getElementById('door-wrapper');
       if (wrapper) {

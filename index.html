@@ -36,6 +36,8 @@
       z-index: 9999;
       perspective: 1200px;
       -webkit-perspective: 1200px;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
       display: flex;
       cursor: pointer;
       overflow: hidden;
@@ -51,8 +53,8 @@
       background-image: url('1000197031.jpg');
       background-size: 100vw 100vh;
       background-repeat: no-repeat;
-      transition: transform 2.2s cubic-bezier(0.35, 0, 0.25, 1);
-      -webkit-transition: -webkit-transform 2.2s cubic-bezier(0.35, 0, 0.25, 1);
+      transition: transform 2s cubic-bezier(0.25, 1, 0.5, 1);
+      -webkit-transition: -webkit-transform 2s cubic-bezier(0.25, 1, 0.5, 1);
       position: relative;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
@@ -70,26 +72,15 @@
       -webkit-transform-origin: right center;
     }
 
-    /* SMOOTH 30% ZOOM EFFECT DIRECTLY ON DOOR PANELS */
-    #door-wrapper.zooming .door-left {
-      transform: scale(1.25);
-      -webkit-transform: scale(1.25);
-    }
-
-    #door-wrapper.zooming .door-right {
-      transform: scale(1.25);
-      -webkit-transform: scale(1.25);
-    }
-
-    /* SLOW GRAND 3D DOOR OPENING */
+    /* INSTANT RESPONSIVE 3D ZOOM & SLOW DOOR OPENING */
     #door-wrapper.open .door-left {
-      transform: scale(1.25) rotateY(-115deg);
-      -webkit-transform: scale(1.25) rotateY(-115deg);
+      transform: scale(1.18) rotateY(-112deg);
+      -webkit-transform: scale(1.18) rotateY(-112deg);
     }
 
     #door-wrapper.open .door-right {
-      transform: scale(1.25) rotateY(115deg);
-      -webkit-transform: scale(1.25) rotateY(115deg);
+      transform: scale(1.18) rotateY(112deg);
+      -webkit-transform: scale(1.18) rotateY(112deg);
     }
 
     /* TOP DOOR TEXT */
@@ -126,7 +117,7 @@
       text-shadow: 0 0 10px rgba(255, 252, 240, 0.95), 0 0 15px rgba(255, 245, 210, 0.9);
     }
 
-    /* COMPACT DOOR CARD WITH "INVITED BY" */
+    /* COMPACT DOOR CARD WITH EACH HOST NAME ON A NEW LINE */
     .door-host-card {
       position: absolute;
       bottom: 20%;
@@ -469,7 +460,7 @@
       box-shadow: 0 8px 22px rgba(139, 26, 26, 0.45);
     }
 
-    /* CLEAN HOST TYPOGRAPHY (NO BOX) AT BOTTOM */
+    /* CLEAN HOST TYPOGRAPHY (NO BOX) AT BOTTOM - EACH NAME ON NEW LINE */
     .contact-block {
       width: 100%;
     }
@@ -557,7 +548,7 @@
 <body>
 
   <!-- Fullscreen 3D Door Overlay -->
-  <div id="door-wrapper" onclick="openDoor()" ontouchstart="openDoor()">
+  <div id="door-wrapper" onclick="openDoor()">
     <!-- Top Header on Door -->
     <div class="door-header-text" id="doorHeaderText">
       Penakacherla Family
@@ -704,22 +695,18 @@
       var doorHostCard = document.getElementById('doorHostCard');
       var scrollOverlay = document.getElementById('scrollOverlay');
 
-      // 1. Hide text overlays
+      // 1. Hide text overlays immediately on tap
       if (tapHint) tapHint.style.opacity = '0';
       if (doorHeaderText) doorHeaderText.style.opacity = '0';
       if (doorHostCard) doorHostCard.style.opacity = '0';
 
-      // 2. Start smooth 30% Zoom immediately on tap
-      if (doorWrapper) doorWrapper.classList.add('zooming');
+      // 2. Trigger instant 3D zoom + slow door swing together
+      if (doorWrapper) doorWrapper.classList.add('open');
+      if (scrollOverlay) scrollOverlay.style.overflowY = 'auto';
 
-      // 3. Swing open doors in slow 3D motion after zoom phase begins (1.0s delay)
-      setTimeout(function() {
-        if (doorWrapper) doorWrapper.classList.add('open');
-        if (scrollOverlay) scrollOverlay.style.overflowY = 'auto';
-        showerBlessings();
-      }, 1000);
+      showerBlessings();
 
-      // 4. Fade out overlay and remove cleanly from view
+      // 3. Fade out overlay and remove cleanly from DOM
       setTimeout(function() {
         if (doorWrapper) {
           doorWrapper.style.opacity = '0';
@@ -727,11 +714,18 @@
             doorWrapper.style.display = 'none';
           }, 800);
         }
-      }, 3200);
+      }, 2000);
     }
 
     /* COUNTDOWN TIMER FUNCTION */
     function initCountdown() {
       var targetDate = new Date('August 19, 2026 04:30:00').getTime();
 
-      fu
+      function updateTimer() {
+        var now = new Date().getTime();
+        var difference = targetDate - now;
+
+        if (difference <= 0) {
+          var timerElem = document.getElementById('countdownTimer');
+          if (timerElem) {
+            timerElem.innerHTML = "<div style='font-family: Marcellus, serif; color: #7a0c0c; font-weight: 600; f

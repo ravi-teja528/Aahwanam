@@ -34,51 +34,52 @@
       width: 100vw;
       height: 100vh;
       z-index: 9999;
-      perspective: 1500px;
+      perspective: 1200px;
+      -webkit-perspective: 1200px;
       display: flex;
       cursor: pointer;
       overflow: hidden;
-      transform-origin: center center;
-      transition: transform 1.6s ease-in-out, opacity 0.8s ease;
-    }
-
-    /* Smooth 30% Zoom */
-    #door-wrapper.zooming {
-      transform: scale(1.3);
+      transition: opacity 0.8s ease;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .door {
       width: 50vw;
       height: 100vh;
+      background-color: #2b0b05;
       background-image: url('1000197031.jpg');
       background-size: 100vw 100vh;
       background-repeat: no-repeat;
-      transition: transform 2.2s cubic-bezier(0.35, 0, 0.25, 1);
+      transition: transform 1.8s cubic-bezier(0.25, 1, 0.5, 1);
+      -webkit-transition: -webkit-transform 1.8s cubic-bezier(0.25, 1, 0.5, 1);
       position: relative;
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
 
     .door-left {
       background-position: left center;
-      transform-origin: left center;
+      transform-origin: 0% 50%;
+      -webkit-transform-origin: 0% 50%;
     }
 
     .door-right {
       background-position: right center;
-      transform-origin: right center;
+      transform-origin: 100% 50%;
+      -webkit-transform-origin: 100% 50%;
     }
 
-    /* 3D Door Opening */
+    /* INSTANT 3D ROTATION & ZOOM ON TAP (0MS DELAY) */
     #door-wrapper.open .door-left {
-      transform: rotateY(-115deg);
+      transform: scale(1.15) rotateY(-110deg);
+      -webkit-transform: scale(1.15) rotateY(-110deg);
     }
 
     #door-wrapper.open .door-right {
-      transform: rotateY(115deg);
-    }
-
-    #door-wrapper.fade-out {
-      pointer-events: none;
-      opacity: 0;
+      transform: scale(1.15) rotateY(110deg);
+      -webkit-transform: scale(1.15) rotateY(110deg);
     }
 
     /* HIGH-CONTRAST DOOR TEXT */
@@ -87,6 +88,7 @@
       top: 6%;
       left: 50%;
       transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
       font-family: 'Cinzel Decorative', serif;
       font-size: 1.65rem;
       font-weight: 700;
@@ -114,12 +116,13 @@
       text-shadow: 0 0 10px rgba(255, 252, 240, 0.95), 0 0 15px rgba(255, 245, 210, 0.9);
     }
 
-    /* DOOR HOST CARD */
+    /* COMPACT DOOR CARD WITH "INVITED BY" */
     .door-host-card {
       position: absolute;
       bottom: 20%;
       left: 50%;
       transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
       text-align: center;
       z-index: 10001;
       width: auto;
@@ -163,6 +166,7 @@
       bottom: 9%;
       left: 50%;
       transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
       background: linear-gradient(135deg, #7a0c0c, #4a0505);
       color: #fff3d1;
       padding: 12px 30px;
@@ -681,63 +685,109 @@
   </div>
 
   <script>
+    var doorOpened = false;
+
     function openDoor() {
-      const doorWrapper = document.getElementById('door-wrapper');
-      const tapHint = document.getElementById('tapHint');
-      const doorHeaderText = document.getElementById('doorHeaderText');
-      const doorHostCard = document.getElementById('doorHostCard');
-      const scrollOverlay = document.getElementById('scrollOverlay');
-      
+      if (doorOpened) return;
+      doorOpened = true;
+
+      var doorWrapper = document.getElementById('door-wrapper');
+      var tapHint = document.getElementById('tapHint');
+      var doorHeaderText = document.getElementById('doorHeaderText');
+      var doorHostCard = document.getElementById('doorHostCard');
+      var scrollOverlay = document.getElementById('scrollOverlay');
+
+      // 1. Hide text overlays immediately on tap
       if (tapHint) tapHint.style.opacity = '0';
       if (doorHeaderText) doorHeaderText.style.opacity = '0';
       if (doorHostCard) doorHostCard.style.opacity = '0';
 
-      doorWrapper.classList.add('zooming');
+      // 2. IMMEDIATELY start 3D rotation & scale together on tap
+      if (doorWrapper) doorWrapper.classList.add('open');
+      if (scrollOverlay) scrollOverlay.style.overflowY = 'auto';
 
-      setTimeout(() => {
-        doorWrapper.classList.add('open');
-        scrollOverlay.style.overflowY = 'auto';
-        showerBlessings();
-      }, 1500);
+      showerBlessings();
 
-      setTimeout(() => {
-        doorWrapper.classList.add('fade-out');
-        doorWrapper.style.display = 'none';
-      }, 3600);
+      // 3. Fade out overlay and remove cleanly from DOM
+      setTimeout(function() {
+        if (doorWrapper) {
+          doorWrapper.style.opacity = '0';
+          setTimeout(function() {
+            doorWrapper.style.display = 'none';
+          }, 800);
+        }
+      }, 2000);
     }
 
     /* COUNTDOWN TIMER FUNCTION */
     function initCountdown() {
-      const targetDate = new Date('August 19, 2026 04:30:00').getTime();
+      var targetDate = new Date('August 19, 2026 04:30:00').getTime();
 
       function updateTimer() {
-        const now = new Date().getTime();
-        const difference = targetDate - now;
+        var now = new Date().getTime();
+        var difference = targetDate - now;
 
         if (difference <= 0) {
-          document.getElementById('countdownTimer').innerHTML = 
-            "<div style='font-family: Marcellus, serif; color: #7a0c0c; font-weight: 600; font-size: 0.95rem;'>✦ The Auspicious Event Has Begun ✦</div>";
+          var timerElem = document.getElementById('countdownTimer');
+          if (timerElem) {
+            timerElem.innerHTML = "<div style='font-family: Marcellus, serif; color: #7a0c0c; font-weight: 600; font-size: 0.95rem;'>✦ The Auspicious Event Has Begun ✦</div>";
+          }
           return;
         }
 
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+        var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-        document.getElementById('timerDays').innerText = String(days).padStart(2, '0');
-        document.getElementById('timerHours').innerText = String(hours).padStart(2, '0');
-        document.getElementById('timerMins').innerText = String(minutes).padStart(2, '0');
-        document.getElementById('timerSecs').innerText = String(seconds).padStart(2, '0');
+        var daysElem = document.getElementById('timerDays');
+        var hoursElem = document.getElementById('timerHours');
+        var minsElem = document.getElementById('timerMins');
+        var secsElem = document.getElementById('timerSecs');
+
+        if (daysElem) daysElem.innerText = String(days).padStart(2, '0');
+        if (hoursElem) hoursElem.innerText = String(hours).padStart(2, '0');
+        if (minsElem) minsElem.innerText = String(minutes).padStart(2, '0');
+        if (secsElem) secsElem.innerText = String(seconds).padStart(2, '0');
       }
 
       updateTimer();
       setInterval(updateTimer, 1000);
     }
 
-    // Initialize timer on load
-    initCountdown();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCountdown);
+    } else {
+      initCountdown();
+    }
 
     /* PETAL & BLESSING SHOWER FUNCTION */
     function showerBlessings() {
-      const
+      var items = ['🌸', '🌹', '🌼', '✨', '🎉'];
+      var totalPetals = 35;
+
+      for (var i = 0; i < totalPetals; i++) {
+        (function(index) {
+          setTimeout(function() {
+            var petal = document.createElement('div');
+            petal.className = 'falling-petal';
+            petal.innerText = items[Math.floor(Math.random() * items.length)];
+            
+            petal.style.left = Math.random() * 95 + 'vw';
+            petal.style.fontSize = (Math.random() * 14 + 16) + 'px';
+            petal.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+
+            document.body.appendChild(petal);
+
+            setTimeout(function() {
+              if (petal && petal.parentNode) {
+                petal.parentNode.removeChild(petal);
+              }
+            }, 4500);
+          }, index * 80);
+        })(i);
+      }
+    }
+  </script>
+</body>
+</html>

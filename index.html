@@ -81,7 +81,7 @@
       opacity: 0;
     }
 
-    /* HIGH-CONTRAST DOOR TEXT */
+    /* HIGH-CONTRAST TOP DOOR TEXT */
     .door-header-text {
       position: absolute;
       top: 6%;
@@ -110,6 +110,39 @@
       font-weight: 700;
       margin-top: 6px;
       letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(255, 252, 240, 0.95), 0 0 15px rgba(255, 245, 210, 0.9);
+    }
+
+    /* PLAIN TEXT IN MIDDLE OF DOOR (MATCHING PAGE 2 FONTS & COLORS) */
+    .door-middle-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #4a0505;
+      text-align: center;
+      width: 90%;
+      max-width: 480px;
+      z-index: 10001;
+      letter-spacing: 0.5px;
+      line-height: 1.4;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      text-shadow: 0 0 12px rgba(255, 252, 240, 0.95), 0 0 20px rgba(255, 245, 210, 0.9), 1px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .door-middle-text span {
+      display: block;
+      font-family: 'Marcellus', serif;
+      font-size: 0.85rem;
+      color: #7a0c0c;
+      font-weight: 600;
+      margin-bottom: 6px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       text-shadow: 0 0 10px rgba(255, 252, 240, 0.95), 0 0 15px rgba(255, 245, 210, 0.9);
     }
@@ -416,7 +449,7 @@
       box-shadow: 0 8px 22px rgba(139, 26, 26, 0.45);
     }
 
-    /* HOST CONTACT & DETAILS ON SECOND PAGE */
+    /* HOST CONTACT & SECOND PAGE DETAILS */
     .contact-block {
       width: 100%;
     }
@@ -488,6 +521,8 @@
     @media (max-width: 480px) {
       .door-header-text { font-size: 1.35rem; top: 6%; }
       .door-header-text span { font-size: 0.9rem; }
+      .door-middle-text { font-size: 1.15rem; }
+      .door-middle-text span { font-size: 0.78rem; }
       .family-title { font-size: 1.75rem; }
       .highlight-title { font-size: 1.8rem; }
       .content-area { gap: 30px; }
@@ -500,11 +535,18 @@
 </head>
 <body>
 
-  <!-- Fullscreen 3D Door Overlay (UNTOUCHED ORIGINAL CODE) -->
+  <!-- Fullscreen 3D Door Overlay -->
   <div id="door-wrapper" onclick="openDoor()">
     <div class="door-header-text" id="doorHeaderText">
       Penakacherla Family
       <span>Warmly Invites You</span>
+    </div>
+
+    <!-- PLAIN TEXT IN MIDDLE OF DOOR (NO BOX/CARD WRAPPER) -->
+    <div class="door-middle-text" id="doorMiddleText">
+      <span>Invited by</span>
+      P Chinna Madanna<br>
+      P Nagamani
     </div>
 
     <div class="door door-left"></div>
@@ -626,15 +668,16 @@
   </div>
 
   <script>
-    /* UNTOUCHED ORIGINAL OPEN DOOR FUNCTION */
     function openDoor() {
       const doorWrapper = document.getElementById('door-wrapper');
       const tapHint = document.getElementById('tapHint');
       const doorHeaderText = document.getElementById('doorHeaderText');
+      const doorMiddleText = document.getElementById('doorMiddleText');
       const scrollOverlay = document.getElementById('scrollOverlay');
       
-      tapHint.style.opacity = '0';
-      doorHeaderText.style.opacity = '0';
+      if (tapHint) tapHint.style.opacity = '0';
+      if (doorHeaderText) doorHeaderText.style.opacity = '0';
+      if (doorMiddleText) doorMiddleText.style.opacity = '0';
 
       doorWrapper.classList.add('zooming');
 

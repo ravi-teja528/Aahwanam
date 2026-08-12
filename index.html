@@ -39,8 +39,9 @@
       cursor: pointer;
       overflow: hidden;
       transform-origin: center center;
-      transition: transform 1.2s ease-in-out, opacity 0.8s ease;
+      transition: transform 1s ease-in-out, opacity 0.8s ease;
       touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
 
     #door-wrapper.zooming {
@@ -54,7 +55,7 @@
       background-image: url('1000197031.jpg');
       background-size: 100vw 100vh;
       background-repeat: no-repeat;
-      transition: transform 1.8s cubic-bezier(0.35, 0, 0.25, 1);
+      transition: transform 1.6s cubic-bezier(0.35, 0, 0.25, 1);
       position: relative;
     }
 
@@ -552,8 +553,8 @@
 </head>
 <body>
 
-  <!-- Fullscreen 3D Door Overlay -->
-  <div id="door-wrapper">
+  <!-- Fullscreen 3D Door Overlay with Inline Handlers -->
+  <div id="door-wrapper" onclick="openDoor()" ontouchstart="openDoor()">
     <!-- Top Header on Door -->
     <div class="door-header-text" id="doorHeaderText">
       Penakacherla Family
@@ -709,25 +710,15 @@
         if (doorWrapper) doorWrapper.classList.add('open');
         if (scrollOverlay) scrollOverlay.style.overflowY = 'auto';
         showerBlessings();
-      }, 1200);
+      }, 800);
 
       setTimeout(() => {
         if (doorWrapper) {
           doorWrapper.classList.add('fade-out');
           doorWrapper.style.display = 'none';
         }
-      }, 3000);
+      }, 2400);
     }
-
-    // Attach listeners for both desktop click and mobile tap
-    document.addEventListener('DOMContentLoaded', function() {
-      const wrapper = document.getElementById('door-wrapper');
-      if (wrapper) {
-        wrapper.addEventListener('click', openDoor);
-        wrapper.addEventListener('touchstart', openDoor, { passive: true });
-      }
-      initCountdown();
-    });
 
     /* COUNTDOWN TIMER FUNCTION */
     function initCountdown() {
@@ -740,4 +731,10 @@
         if (difference <= 0) {
           const timerElem = document.getElementById('countdownTimer');
           if (timerElem) {
-            timerElem.innerHTML = 
+            timerElem.innerHTML = "<div style='font-family: Marcellus, serif; color: #7a0c0c; font-weight: 600; font-size: 0.95rem;'>✦ The Auspicious Event Has Begun ✦</div>";
+          }
+          return;
+        }
+
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const 

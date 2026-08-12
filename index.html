@@ -79,14 +79,14 @@
       opacity: 0;
     }
 
-    /* HIGH-CONTRAST DOOR TEXT (INCLUDES HOST & DATE ON DOOR) */
+    /* TOP DOOR TEXT (NO DATE) */
     .door-header-text {
       position: absolute;
-      top: 5%;
+      top: 6%;
       left: 50%;
       transform: translateX(-50%);
       font-family: 'Cinzel Decorative', serif;
-      font-size: 1.55rem;
+      font-size: 1.65rem;
       font-weight: 700;
       color: #4a0505;
       text-align: center;
@@ -94,46 +94,65 @@
       max-width: 480px;
       z-index: 10001;
       letter-spacing: 1px;
-      line-height: 1.3;
+      line-height: 1.35;
       pointer-events: none;
       transition: opacity 0.4s ease;
       text-shadow: 0 0 12px rgba(255, 252, 240, 0.95), 0 0 20px rgba(255, 245, 210, 0.9), 1px 2px 4px rgba(0,0,0,0.3);
     }
 
-    .door-host-sub {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.05rem;
-      color: #7a0c0c;
-      font-weight: 700;
-      margin: 4px 0;
-      text-shadow: 0 0 10px rgba(255, 252, 240, 0.95), 0 0 15px rgba(255, 245, 210, 0.9);
-    }
-
     .door-header-text span {
       display: block;
       font-family: 'Marcellus', serif;
-      font-size: 0.95rem;
-      color: #5c0d0d;
+      font-size: 1.05rem;
+      color: #7a0c0c;
       font-weight: 700;
-      margin-top: 4px;
+      margin-top: 6px;
       letter-spacing: 2px;
       text-transform: uppercase;
       text-shadow: 0 0 10px rgba(255, 252, 240, 0.95), 0 0 15px rgba(255, 245, 210, 0.9);
     }
 
-    .door-date-sub {
+    /* LOWER HALF DOOR HOST HIGHLIGHT CARD */
+    .door-host-card {
+      position: absolute;
+      bottom: 18%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10001;
+      width: 88%;
+      max-width: 420px;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      background: rgba(255, 253, 247, 0.88);
+      border: 1px solid #d4af37;
+      padding: 10px 20px;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      backdrop-filter: blur(4px);
+    }
+
+    .door-host-label {
       font-family: 'Marcellus', serif;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #8b1a1a;
+      letter-spacing: 2px;
+      text-transform: uppercase;
       font-weight: 700;
-      margin-top: 6px;
-      letter-spacing: 1px;
-      text-shadow: 0 0 10px rgba(255, 252, 240, 0.95);
+    }
+
+    .door-host-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #4a0505;
+      margin-top: 2px;
+      letter-spacing: 0.5px;
     }
 
     .tap-hint {
       position: absolute;
-      bottom: 8%;
+      bottom: 7%;
       left: 50%;
       transform: translateX(-50%);
       background: linear-gradient(135deg, #7a0c0c, #4a0505);
@@ -427,7 +446,7 @@
       box-shadow: 0 8px 22px rgba(139, 26, 26, 0.45);
     }
 
-    /* HOST CONTACT (1 HOST NAME + 2 PHONE NUMBERS) */
+    /* HIGHLIGHTED HOST CONTACT BLOCK */
     .contact-block {
       width: 100%;
     }
@@ -435,16 +454,28 @@
     .contact-label {
       font-family: 'Marcellus', serif;
       font-size: 0.88rem;
-      color: #666;
-      margin-bottom: 4px;
+      color: #8b1a1a;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .host-highlight-card {
+      display: inline-block;
+      background: rgba(255, 253, 247, 0.95);
+      border: 2px solid #d4af37;
+      padding: 10px 24px;
+      border-radius: 25px;
+      box-shadow: 0 6px 18px rgba(139, 26, 26, 0.15);
+      margin-bottom: 16px;
     }
 
     .host-name {
       font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #7a0c0c;
-      margin-bottom: 12px;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #5c0d0d;
       letter-spacing: 0.5px;
     }
 
@@ -488,10 +519,10 @@
     }
 
     @media (max-width: 480px) {
-      .door-header-text { font-size: 1.3rem; top: 5%; }
-      .door-host-sub { font-size: 0.95rem; }
-      .door-header-text span { font-size: 0.85rem; }
-      .door-date-sub { font-size: 0.8rem; }
+      .door-header-text { font-size: 1.35rem; top: 6%; }
+      .door-header-text span { font-size: 0.9rem; }
+      .door-host-name { font-size: 1.15rem; }
+      .door-host-card { bottom: 18%; }
       .family-title { font-size: 1.75rem; }
       .highlight-title { font-size: 1.8rem; }
       .content-area { gap: 30px; }
@@ -504,13 +535,18 @@
 </head>
 <body>
 
-  <!-- Fullscreen 3D Door Overlay with Host Name & Date -->
+  <!-- Fullscreen 3D Door Overlay -->
   <div id="door-wrapper" onclick="openDoor()">
+    <!-- Top Header on Door (Date Removed) -->
     <div class="door-header-text" id="doorHeaderText">
       Penakacherla Family
-      <div class="door-host-sub">Host: P Chinna Madanna</div>
       <span>Warmly Invites You</span>
-      <div class="door-date-sub">📅 19 August 2026</div>
+    </div>
+
+    <!-- Lower Half Highlighted Host Card on Door -->
+    <div class="door-host-card" id="doorHostCard">
+      <div class="door-host-label">Host</div>
+      <div class="door-host-name">P Chinna Madanna</div>
     </div>
 
     <div class="door door-left"></div>
@@ -615,15 +651,18 @@
         </a>
       </div>
 
-      <!-- HOST CONTACT (1 HOST NAME + 2 PHONE NUMBERS) -->
+      <!-- HIGHLIGHTED HOST CONTACT BLOCK -->
       <div class="contact-block">
         <div class="contact-label">Host</div>
-        <div class="host-name">P Chinna Madanna</div>
+        <div class="host-highlight-card">
+          <div class="host-name">P Chinna Madanna</div>
+        </div>
         <div class="contact-buttons">
-          <a href="tel:9849561084" class="phone-btn">📞 9849561084</a>
+          
           <a href="tel:8309973077" class="phone-btn">📞 8309973077</a>
           <a href="tel:7993583855" class="phone-btn">📞 7993583855</a>
         </div>
+        
       </div>
 
     </div>
@@ -634,10 +673,12 @@
       const doorWrapper = document.getElementById('door-wrapper');
       const tapHint = document.getElementById('tapHint');
       const doorHeaderText = document.getElementById('doorHeaderText');
+      const doorHostCard = document.getElementById('doorHostCard');
       const scrollOverlay = document.getElementById('scrollOverlay');
       
       tapHint.style.opacity = '0';
       doorHeaderText.style.opacity = '0';
+      if (doorHostCard) doorHostCard.style.opacity = '0';
 
       doorWrapper.classList.add('zooming');
 
@@ -682,7 +723,6 @@
       setInterval(updateTimer, 1000);
     }
 
-    // Initialize timer on page load
     initCountdown();
 
     /* PETAL & BLESSING SHOWER FUNCTION */
@@ -693,21 +733,4 @@
       for (let i = 0; i < totalPetals; i++) {
         setTimeout(() => {
           const petal = document.createElement('div');
-          petal.className = 'falling-petal';
-          petal.innerText = items[Math.floor(Math.random() * items.length)];
-          
-          petal.style.left = Math.random() * 95 + 'vw';
-          petal.style.fontSize = (Math.random() * 14 + 16) + 'px';
-          petal.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
-
-          document.body.appendChild(petal);
-
-          setTimeout(() => {
-            petal.remove();
-          }, 4500);
-        }, i * 80);
-      }
-    }
-  </script>
-</body>
-</html>
+          p

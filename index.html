@@ -127,12 +127,11 @@
       max-width: 340px;
       pointer-events: none;
       transition: opacity 0.4s ease;
-      background: rgba(255, 253, 247, 0.88);
+      background: rgba(255, 253, 247, 0.95);
       border: 1px solid #d4af37;
       padding: 8px 22px;
       border-radius: 16px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      backdrop-filter: blur(4px);
     }
 
     .door-host-label {
@@ -548,13 +547,13 @@
 
   <!-- Fullscreen 3D Door Overlay -->
   <div id="door-wrapper" onclick="openDoor()">
-    <div class="door-header-text" id="doorHeaderText">
+    <div class="door-header-text" id="doorHeaderText" onclick="openDoor()">
       Penakacherla Family
       <span>Warmly Invites You</span>
     </div>
 
     <!-- Door Card displaying "Invited by" with each host name on a new line -->
-    <div class="door-host-card" id="doorHostCard">
+    <div class="door-host-card" id="doorHostCard" onclick="openDoor()">
       <div class="door-host-label">Invited by</div>
       <div class="door-host-name">
         <div>P Chinna Madanna</div>
@@ -565,7 +564,7 @@
     <div class="door door-left"></div>
     <div class="door door-right"></div>
     
-    <div class="tap-hint" id="tapHint">Tap To Open</div>
+    <div class="tap-hint" id="tapHint" onclick="openDoor()">Tap To Open</div>
   </div>
 
   <!-- FIXED STAY-STILL BACKGROUND -->
@@ -681,7 +680,12 @@
   </div>
 
   <script>
+    let doorOpened = false;
+
     function openDoor() {
+      if (doorOpened) return;
+      doorOpened = true;
+
       const doorWrapper = document.getElementById('door-wrapper');
       const tapHint = document.getElementById('tapHint');
       const doorHeaderText = document.getElementById('doorHeaderText');
@@ -692,17 +696,19 @@
       if (doorHeaderText) doorHeaderText.style.opacity = '0';
       if (doorHostCard) doorHostCard.style.opacity = '0';
 
-      doorWrapper.classList.add('zooming');
+      if (doorWrapper) doorWrapper.classList.add('zooming');
 
       setTimeout(() => {
-        doorWrapper.classList.add('open');
-        scrollOverlay.style.overflowY = 'auto';
+        if (doorWrapper) doorWrapper.classList.add('open');
+        if (scrollOverlay) scrollOverlay.style.overflowY = 'auto';
         showerBlessings();
       }, 1500);
 
       setTimeout(() => {
-        doorWrapper.classList.add('fade-out');
-        doorWrapper.style.display = 'none';
+        if (doorWrapper) {
+          doorWrapper.classList.add('fade-out');
+          doorWrapper.style.display = 'none';
+        }
       }, 3600);
     }
 
@@ -715,8 +721,10 @@
         const difference = targetDate - now;
 
         if (difference <= 0) {
-          document.getElementById('countdownTimer').innerHTML = 
-            "<div style='font-family: Marcellus, serif; color: #7a0c0c; font-weight: 600; font-size: 0.95rem;'>✦ The Auspicious Event Has Begun ✦</div>";
+          const timerElem = document.getElementById('countdownTimer');
+          if (timerElem) {
+            timerElem.innerHTML = "<div style='font-family: Marcellus, serif; color: #7a0c0c; font-weight: 600; font-size: 0.95rem;'>✦ The Auspicious Event Has Begun ✦</div>";
+          }
           return;
         }
 
@@ -725,19 +733,9 @@
         const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-        document.getElementById('timerDays').innerText = String(days).padStart(2, '0');
-        document.getElementById('timerHours').innerText = String(hours).padStart(2, '0');
-        document.getElementById('timerMins').innerText = String(minutes).padStart(2, '0');
-        document.getElementById('timerSecs').innerText = String(seconds).padStart(2, '0');
-      }
+        const daysElem = document.getElementById('timerDays');
+        const hoursElem = document.getElementById('timerHours');
+        const minsElem = document.getElementById('timerMins');
+        const secsElem = document.getElementById('timerSecs');
 
-      updateTimer();
-      setInterval(updateTimer, 1000);
-    }
-
-    // Initialize timer on load
-    initCountdown();
-
-    /* PETAL & BLESSING SHOWER FUNCTION */
-    function showerBlessings() {
-      const
+        if (daysElem) daysElem.innerText = Str

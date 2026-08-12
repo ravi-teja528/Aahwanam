@@ -39,7 +39,8 @@
       cursor: pointer;
       overflow: hidden;
       transform-origin: center center;
-      transition: transform 1.6s ease-in-out, opacity 0.8s ease;
+      transition: transform 1.2s ease-in-out, opacity 0.8s ease;
+      touch-action: manipulation;
     }
 
     #door-wrapper.zooming {
@@ -49,10 +50,11 @@
     .door {
       width: 50vw;
       height: 100vh;
+      background-color: #2b0b05;
       background-image: url('1000197031.jpg');
       background-size: 100vw 100vh;
       background-repeat: no-repeat;
-      transition: transform 2.2s cubic-bezier(0.35, 0, 0.25, 1);
+      transition: transform 1.8s cubic-bezier(0.35, 0, 0.25, 1);
       position: relative;
     }
 
@@ -261,39 +263,12 @@
 
     .family-title {
       font-family: 'Playfair Display', serif;
-      font-size: 2rem;
+      font-size: 2.1rem;
       font-weight: 800;
       color: #5c0d0d;
-      margin-top: 4px;
+      margin-top: 6px;
       line-height: 1.25;
       text-shadow: 1px 1px 2px rgba(255, 235, 200, 0.9);
-    }
-
-    /* NEW TOP HOST HIGHLIGHT BADGE ON 2ND PAGE */
-    .top-host-badge {
-      display: inline-block;
-      margin-top: 8px;
-      background: rgba(255, 253, 247, 0.9);
-      border: 1px solid #d4af37;
-      padding: 5px 18px;
-      border-radius: 20px;
-      box-shadow: 0 3px 10px rgba(139, 26, 26, 0.12);
-    }
-
-    .top-host-text {
-      font-family: 'Marcellus', serif;
-      font-size: 0.82rem;
-      color: #8b1a1a;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    .top-host-text strong {
-      color: #4a0505;
-      font-family: 'Playfair Display', serif;
-      font-size: 0.95rem;
-      letter-spacing: 0.5px;
     }
 
     .highlight-container {
@@ -323,6 +298,37 @@
       max-width: 440px;
       font-weight: 500;
       text-shadow: 0 1px 2px rgba(255, 255, 255, 0.85);
+    }
+
+    /* ELEGANT INVITATION BY HOST ATTRIBUTION BADGE */
+    .host-attribution-box {
+      margin-top: -12px;
+      padding: 8px 22px;
+      background: rgba(255, 253, 247, 0.92);
+      border: 1.5px solid #d4af37;
+      border-radius: 20px;
+      box-shadow: 0 4px 14px rgba(139, 26, 26, 0.12);
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .host-attribution-label {
+      font-family: 'Marcellus', serif;
+      font-size: 0.78rem;
+      color: #8b1a1a;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .host-attribution-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #4a0505;
+      letter-spacing: 0.5px;
     }
 
     .date-text {
@@ -536,6 +542,7 @@
       .family-title { font-size: 1.7rem; }
       .highlight-title { font-size: 1.8rem; }
       .content-area { gap: 28px; }
+      .host-attribution-name { font-size: 1.1rem; }
       .timer-unit { min-width: 50px; padding: 5px 8px; }
       .timer-value { font-size: 1rem; }
       .fab-celebrate { bottom: 18px; right: 18px; width: 48px; height: 48px; font-size: 1.3rem; }
@@ -546,7 +553,7 @@
 <body>
 
   <!-- Fullscreen 3D Door Overlay -->
-  <div id="door-wrapper" onclick="openDoor()">
+  <div id="door-wrapper">
     <!-- Top Header on Door -->
     <div class="door-header-text" id="doorHeaderText">
       Penakacherla Family
@@ -575,15 +582,10 @@
   <div class="scroll-overlay" id="scrollOverlay">
     <div class="content-area">
       
-      <!-- Top Shlok, Family Name & Relocated Host Name -->
+      <!-- Top Shlok & Family Name -->
       <div>
         <div class="shlok-text">|| Shree Madavraja Swamy Namaha ||</div>
         <div class="family-title">Penakacherla Family's</div>
-        
-        <!-- RELOCATED HOST NAME BADGE ON 2ND PAGE TOP -->
-        <div class="top-host-badge">
-          <span class="top-host-text">Host: <strong>P Chinna Madanna</strong></span>
-        </div>
       </div>
 
       <!-- INVITATION HEADER -->
@@ -596,6 +598,12 @@
       <!-- INVITATION TEXT -->
       <div class="invitation-desc">
         With the divine grace and blessings of Shree Madavraja Swamy, we cordially invite you to join us in celebrating our Housewarming Ceremony. Your presence and blessings will make our new beginning truly auspicious.
+      </div>
+
+      <!-- ELEGANT HOST ATTRIBUTION RIGHT AFTER INVITATION MESSAGE -->
+      <div class="host-attribution-box">
+        <span class="host-attribution-label">✦ Cordially Invited By ✦</span>
+        <span class="host-attribution-name">P Chinna Madanna</span>
       </div>
 
       <!-- Event Date -->
@@ -679,30 +687,47 @@
   </div>
 
   <script>
+    let doorOpened = false;
+
     function openDoor() {
+      if (doorOpened) return;
+      doorOpened = true;
+
       const doorWrapper = document.getElementById('door-wrapper');
       const tapHint = document.getElementById('tapHint');
       const doorHeaderText = document.getElementById('doorHeaderText');
       const doorHostCard = document.getElementById('doorHostCard');
       const scrollOverlay = document.getElementById('scrollOverlay');
       
-      tapHint.style.opacity = '0';
-      doorHeaderText.style.opacity = '0';
+      if (tapHint) tapHint.style.opacity = '0';
+      if (doorHeaderText) doorHeaderText.style.opacity = '0';
       if (doorHostCard) doorHostCard.style.opacity = '0';
 
-      doorWrapper.classList.add('zooming');
+      if (doorWrapper) doorWrapper.classList.add('zooming');
 
       setTimeout(() => {
-        doorWrapper.classList.add('open');
-        scrollOverlay.style.overflowY = 'auto';
+        if (doorWrapper) doorWrapper.classList.add('open');
+        if (scrollOverlay) scrollOverlay.style.overflowY = 'auto';
         showerBlessings();
-      }, 1500);
+      }, 1200);
 
       setTimeout(() => {
-        doorWrapper.classList.add('fade-out');
-        doorWrapper.style.display = 'none';
-      }, 3600);
+        if (doorWrapper) {
+          doorWrapper.classList.add('fade-out');
+          doorWrapper.style.display = 'none';
+        }
+      }, 3000);
     }
+
+    // Attach listeners for both desktop click and mobile tap
+    document.addEventListener('DOMContentLoaded', function() {
+      const wrapper = document.getElementById('door-wrapper');
+      if (wrapper) {
+        wrapper.addEventListener('click', openDoor);
+        wrapper.addEventListener('touchstart', openDoor, { passive: true });
+      }
+      initCountdown();
+    });
 
     /* COUNTDOWN TIMER FUNCTION */
     function initCountdown() {
@@ -715,20 +740,4 @@
         if (difference <= 0) {
           const timerElem = document.getElementById('countdownTimer');
           if (timerElem) {
-            timerElem.innerHTML = "<div style='font-family: Marcellus, serif; color: #7a0c0c; font-weight: 600; font-size: 0.95rem;'>✦ The Auspicious Event Has Begun ✦</div>";
-          }
-          return;
-        }
-
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-        const daysElem = document.getElementById('timerDays');
-        const hoursElem = document.getElementById('timerHours');
-        const minsElem = document.getElementById('timerMins');
-        const secsElem = document.getElementById('timerSecs');
-
-        if (daysElem) daysElem.innerText = String(days).padStart(2, '0');
-        if (hoursElem) hoursElem
+            timerElem.innerHTML = 

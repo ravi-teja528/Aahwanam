@@ -51,8 +51,8 @@
       background-image: url('1000197031.jpg');
       background-size: 100vw 100vh;
       background-repeat: no-repeat;
-      transition: transform 2s cubic-bezier(0.25, 1, 0.5, 1);
-      -webkit-transition: -webkit-transform 2s cubic-bezier(0.25, 1, 0.5, 1);
+      transition: transform 2.2s cubic-bezier(0.35, 0, 0.25, 1);
+      -webkit-transition: -webkit-transform 2.2s cubic-bezier(0.35, 0, 0.25, 1);
       position: relative;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
@@ -70,15 +70,26 @@
       -webkit-transform-origin: right center;
     }
 
-    /* GRAND 3D DOOR SWING OPEN */
+    /* SMOOTH 30% ZOOM EFFECT DIRECTLY ON DOOR PANELS */
+    #door-wrapper.zooming .door-left {
+      transform: scale(1.25);
+      -webkit-transform: scale(1.25);
+    }
+
+    #door-wrapper.zooming .door-right {
+      transform: scale(1.25);
+      -webkit-transform: scale(1.25);
+    }
+
+    /* SLOW GRAND 3D DOOR OPENING */
     #door-wrapper.open .door-left {
-      transform: rotateY(-115deg);
-      -webkit-transform: rotateY(-115deg);
+      transform: scale(1.25) rotateY(-115deg);
+      -webkit-transform: scale(1.25) rotateY(-115deg);
     }
 
     #door-wrapper.open .door-right {
-      transform: rotateY(115deg);
-      -webkit-transform: rotateY(115deg);
+      transform: scale(1.25) rotateY(115deg);
+      -webkit-transform: scale(1.25) rotateY(115deg);
     }
 
     /* TOP DOOR TEXT */
@@ -693,18 +704,22 @@
       var doorHostCard = document.getElementById('doorHostCard');
       var scrollOverlay = document.getElementById('scrollOverlay');
 
-      // 1. Hide door text & tap prompt instantly
+      // 1. Hide text overlays
       if (tapHint) tapHint.style.opacity = '0';
       if (doorHeaderText) doorHeaderText.style.opacity = '0';
       if (doorHostCard) doorHostCard.style.opacity = '0';
 
-      // 2. Open 3D doors smoothly
-      if (doorWrapper) doorWrapper.classList.add('open');
-      if (scrollOverlay) scrollOverlay.style.overflowY = 'auto';
+      // 2. Start smooth 30% Zoom immediately on tap
+      if (doorWrapper) doorWrapper.classList.add('zooming');
 
-      showerBlessings();
+      // 3. Swing open doors in slow 3D motion after zoom phase begins (1.0s delay)
+      setTimeout(function() {
+        if (doorWrapper) doorWrapper.classList.add('open');
+        if (scrollOverlay) scrollOverlay.style.overflowY = 'auto';
+        showerBlessings();
+      }, 1000);
 
-      // 3. Fade out overlay and remove
+      // 4. Fade out overlay and remove cleanly from view
       setTimeout(function() {
         if (doorWrapper) {
           doorWrapper.style.opacity = '0';
@@ -712,74 +727,11 @@
             doorWrapper.style.display = 'none';
           }, 800);
         }
-      }, 1800);
+      }, 3200);
     }
 
     /* COUNTDOWN TIMER FUNCTION */
     function initCountdown() {
       var targetDate = new Date('August 19, 2026 04:30:00').getTime();
 
-      function updateTimer() {
-        var now = new Date().getTime();
-        var difference = targetDate - now;
-
-        if (difference <= 0) {
-          var timerElem = document.getElementById('countdownTimer');
-          if (timerElem) {
-            timerElem.innerHTML = "<div style='font-family: Marcellus, serif; color: #7a0c0c; font-weight: 600; font-size: 0.95rem;'>✦ The Auspicious Event Has Begun ✦</div>";
-          }
-          return;
-        }
-
-        var days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-        var daysElem = document.getElementById('timerDays');
-        var hoursElem = document.getElementById('timerHours');
-        var minsElem = document.getElementById('timerMins');
-        var secsElem = document.getElementById('timerSecs');
-
-        if (daysElem) daysElem.innerText = String(days).padStart(2, '0');
-        if (hoursElem) hoursElem.innerText = String(hours).padStart(2, '0');
-        if (minsElem) minsElem.innerText = String(minutes).padStart(2, '0');
-        if (secsElem) secsElem.innerText = String(seconds).padStart(2, '0');
-      }
-
-      updateTimer();
-      setInterval(updateTimer, 1000);
-    }
-
-    initCountdown();
-
-    /* PETAL & BLESSING SHOWER FUNCTION */
-    function showerBlessings() {
-      var items = ['🌸', '🌹', '🌼', '✨', '🎉'];
-      var totalPetals = 35;
-
-      for (var i = 0; i < totalPetals; i++) {
-        (function(index) {
-          setTimeout(function() {
-            var petal = document.createElement('div');
-            petal.className = 'falling-petal';
-            petal.innerText = items[Math.floor(Math.random() * items.length)];
-            
-            petal.style.left = Math.random() * 95 + 'vw';
-            petal.style.fontSize = (Math.random() * 14 + 16) + 'px';
-            petal.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
-
-            document.body.appendChild(petal);
-
-            setTimeout(function() {
-              if (petal && petal.parentNode) {
-                petal.parentNode.removeChild(petal);
-              }
-            }, 4500);
-          }, index * 80);
-        })(i);
-      }
-    }
-  </script>
-</body>
-</html>
+      fu

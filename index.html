@@ -79,7 +79,7 @@
       opacity: 0;
     }
 
-    /* TOP DOOR TEXT (NO DATE) */
+    /* TOP DOOR TEXT */
     .door-header-text {
       position: absolute;
       top: 6%;
@@ -112,47 +112,48 @@
       text-shadow: 0 0 10px rgba(255, 252, 240, 0.95), 0 0 15px rgba(255, 245, 210, 0.9);
     }
 
-    /* LOWER HALF DOOR HOST HIGHLIGHT CARD */
+    /* COMPACT HIGHER HOST CARD ON DOOR */
     .door-host-card {
       position: absolute;
-      bottom: 18%;
+      bottom: 22%;
       left: 50%;
       transform: translateX(-50%);
       text-align: center;
       z-index: 10001;
-      width: 88%;
-      max-width: 420px;
+      width: auto;
+      max-width: 280px;
       pointer-events: none;
       transition: opacity 0.4s ease;
       background: rgba(255, 253, 247, 0.88);
       border: 1px solid #d4af37;
-      padding: 10px 20px;
-      border-radius: 20px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      padding: 6px 18px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
       backdrop-filter: blur(4px);
     }
 
     .door-host-label {
       font-family: 'Marcellus', serif;
-      font-size: 0.8rem;
+      font-size: 0.72rem;
       color: #8b1a1a;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       font-weight: 700;
     }
 
     .door-host-name {
       font-family: 'Playfair Display', serif;
-      font-size: 1.35rem;
+      font-size: 1.1rem;
       font-weight: 800;
       color: #4a0505;
-      margin-top: 2px;
+      margin-top: 1px;
       letter-spacing: 0.5px;
     }
 
+    /* TAP TO OPEN (ORIGINAL POSITION) */
     .tap-hint {
       position: absolute;
-      bottom: 7%;
+      bottom: 9%;
       left: 50%;
       transform: translateX(-50%);
       background: linear-gradient(135deg, #7a0c0c, #4a0505);
@@ -465,15 +466,15 @@
       display: inline-block;
       background: rgba(255, 253, 247, 0.95);
       border: 2px solid #d4af37;
-      padding: 10px 24px;
-      border-radius: 25px;
-      box-shadow: 0 6px 18px rgba(139, 26, 26, 0.15);
-      margin-bottom: 16px;
+      padding: 8px 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(139, 26, 26, 0.12);
+      margin-bottom: 14px;
     }
 
     .host-name {
       font-family: 'Playfair Display', serif;
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       font-weight: 800;
       color: #5c0d0d;
       letter-spacing: 0.5px;
@@ -521,8 +522,8 @@
     @media (max-width: 480px) {
       .door-header-text { font-size: 1.35rem; top: 6%; }
       .door-header-text span { font-size: 0.9rem; }
-      .door-host-name { font-size: 1.15rem; }
-      .door-host-card { bottom: 18%; }
+      .door-host-name { font-size: 1.05rem; }
+      .door-host-card { bottom: 22%; }
       .family-title { font-size: 1.75rem; }
       .highlight-title { font-size: 1.8rem; }
       .content-area { gap: 30px; }
@@ -537,13 +538,13 @@
 
   <!-- Fullscreen 3D Door Overlay -->
   <div id="door-wrapper" onclick="openDoor()">
-    <!-- Top Header on Door (Date Removed) -->
+    <!-- Top Header on Door -->
     <div class="door-header-text" id="doorHeaderText">
       Penakacherla Family
       <span>Warmly Invites You</span>
     </div>
 
-    <!-- Lower Half Highlighted Host Card on Door -->
+    <!-- Compact Higher Host Card on Door -->
     <div class="door-host-card" id="doorHostCard">
       <div class="door-host-label">Host</div>
       <div class="door-host-name">P Chinna Madanna</div>
@@ -658,11 +659,9 @@
           <div class="host-name">P Chinna Madanna</div>
         </div>
         <div class="contact-buttons">
-          
           <a href="tel:8309973077" class="phone-btn">📞 8309973077</a>
           <a href="tel:7993583855" class="phone-btn">📞 7993583855</a>
         </div>
-        
       </div>
 
     </div>
@@ -703,8 +702,10 @@
         const difference = targetDate - now;
 
         if (difference <= 0) {
-          document.getElementById('countdownTimer').innerHTML = 
-            "<div style='font-family: Marcellus, serif; color: #7a0c0c; font-weight: 600; font-size: 0.95rem;'>✦ The Auspicious Event Has Begun ✦</div>";
+          const timerElem = document.getElementById('countdownTimer');
+          if (timerElem) {
+            timerElem.innerHTML = "<div style='font-family: Marcellus, serif; color: #7a0c0c; font-weight: 600; font-size: 0.95rem;'>✦ The Auspicious Event Has Begun ✦</div>";
+          }
           return;
         }
 
@@ -713,10 +714,15 @@
         const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-        document.getElementById('timerDays').innerText = String(days).padStart(2, '0');
-        document.getElementById('timerHours').innerText = String(hours).padStart(2, '0');
-        document.getElementById('timerMins').innerText = String(minutes).padStart(2, '0');
-        document.getElementById('timerSecs').innerText = String(seconds).padStart(2, '0');
+        const daysElem = document.getElementById('timerDays');
+        const hoursElem = document.getElementById('timerHours');
+        const minsElem = document.getElementById('timerMins');
+        const secsElem = document.getElementById('timerSecs');
+
+        if (daysElem) daysElem.innerText = String(days).padStart(2, '0');
+        if (hoursElem) hoursElem.innerText = String(hours).padStart(2, '0');
+        if (minsElem) minsElem.innerText = String(minutes).padStart(2, '0');
+        if (secsElem) secsElem.innerText = String(seconds).padStart(2, '0');
       }
 
       updateTimer();
@@ -733,4 +739,21 @@
       for (let i = 0; i < totalPetals; i++) {
         setTimeout(() => {
           const petal = document.createElement('div');
-          p
+          petal.className = 'falling-petal';
+          petal.innerText = items[Math.floor(Math.random() * items.length)];
+          
+          petal.style.left = Math.random() * 95 + 'vw';
+          petal.style.fontSize = (Math.random() * 14 + 16) + 'px';
+          petal.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+
+          document.body.appendChild(petal);
+
+          setTimeout(() => {
+            petal.remove();
+          }, 4500);
+        }, i * 80);
+      }
+    }
+  </script>
+</body>
+</html>
